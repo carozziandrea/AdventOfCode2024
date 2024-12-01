@@ -1,10 +1,9 @@
 ##AOC DayXX
 
+import time
 day = "XX"
 
 #Part 1
-
-import time
 start = time.perf_counter()
 
 with open(f'Day{day}\\day{day}input.txt', 'r') as file:

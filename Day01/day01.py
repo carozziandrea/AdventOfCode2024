@@ -1,10 +1,9 @@
 ##AOC Day01
 
+import time
 day = "01"
 
 #Part 1
-
-import time
 start = time.perf_counter()
 
 list_1 = []
