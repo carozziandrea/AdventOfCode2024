@@ -1,5 +1,7 @@
 ##AOC Day01
 
+day = "01"
+
 #Part 1
 
 import time
@@ -8,7 +10,7 @@ start = time.perf_counter()
 list_1 = []
 list_2 = []
 
-with open('C:\\users\\andre\\Desktop\\AOC24\\Day01\\day01input.txt', 'r') as file:
+with open(f'Day{day}\\day{day}input.txt', 'r') as file:
     for line in file:
         nums = line.split("   ")
         list_1.append(int(nums[0].strip()))
@@ -33,7 +35,7 @@ start = time.perf_counter()
 list_1 = []
 dict_2 = {}
 
-with open('C:\\users\\andre\\Desktop\\AOC24\\Day01\\day01input.txt', 'r') as file:
+with open(f'Day{day}\\day{day}input.txt', 'r') as file:
     for line in file:
         nums = line.split("   ")
         num1 = int(nums[0].strip())
