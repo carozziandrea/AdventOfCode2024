@@ -9,7 +9,6 @@ start = time.perf_counter()
 def checkLine(nums):
     if len(nums) < 2:
         return True
-
     asc = True
     desc = True
     for i in range(1, len(nums)):
@@ -31,10 +30,8 @@ def checkLine(nums):
 #Part 2
 def canTolerate(levels):
     sub_levels = [levels[:i] + levels[i+1:] for i in range(0, len(levels))]
-    #print(sub_levels)
     for s in sub_levels:
         if checkLine(s):
-            #print(f'OK: {s}')
             return True
     return False
 
