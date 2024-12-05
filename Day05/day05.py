@@ -62,7 +62,6 @@ for inc in incorrect:
             elif inc[j] in inverted_rules_map:
                 if inc[i] in inverted_rules_map[inc[j]]:
                     inc[i], inc[j] = inc[j], inc[i]
-
     solution.append(int(inc[math.floor(len(inc)/2)]))
 
 part2 = sum(solution)
