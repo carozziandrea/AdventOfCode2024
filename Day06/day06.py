@@ -62,32 +62,20 @@ print(f'\t {((end - start) * 10**3):.3f} ms')
 #Part 2
 start = time.perf_counter()
 
-def load_matrix(filepath):
-    with open(filepath, 'r') as file:
-        lines = file.read().strip().split('\n')
-    # Determina la dimensione della matrice
-    num_rows = len(lines)
-    num_cols = max(len(line) for line in lines)
-    # Crea una matrice vuota e riempi con i caratteri letti
-    matrix = np.full((num_rows, num_cols), '.', dtype=str)
-    for i, line in enumerate(lines):
-        for j, char in enumerate(line):
-            matrix[i, j] = char
-    return matrix
-
 sum_values = 0
+loop = False
 solutions = 0
 visited = set()
+duplicates = {}
 
 for (k,v), e in matrix.items():
     r, c = init_pos[0], init_pos[1]
     dir = "up"
-    if (k,v) == (6,3):
-        pass
     if e != '#' and e != '^':
         matrix[(k,v)] = '#'
         while True:
-            if sum_values > len(visited) + 1000:
+            if loop:
+                loop = False
                 solutions += 1
                 break
             try:
@@ -104,17 +92,14 @@ for (k,v), e in matrix.items():
                 ele = matrix[(tempr,tempc)]
                 if ele == '#':
                         dir = turn90(dir)
+                        duplicates[(r,c)] = duplicates.get((r,c), 0) + 1
+                        if duplicates[(r,c)] == 5:
+                            loop = True
                 else:
-                    visited.add((r,c))
-                    sum_values += 1
                     r, c = tempr, tempc
             except KeyError as e:
-                #print(f'{k}, {v} - No Loop')
-                visited.add((r,c))
-                sum_values += 1
                 break
-        visited.clear()
-        sum_values = 0
+        duplicates.clear()
         matrix[(k,v)] = '.'
 
 
