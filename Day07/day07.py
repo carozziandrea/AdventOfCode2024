@@ -10,29 +10,33 @@ class Node:
         self.left = None
         self.right = None
 
-#Part 1
-start = time.perf_counter()
-
-def dfs_with_target(node, current_value, target, visited_targets):
+def dfs(node, current_value, target, visited_targets, p2):
     if current_value > target:
         return False
 
     if node is None:
         return False
 
-    if node.left is None and node.right is None:
+    if node.left is None and node.right is None and node.center is None:
         if current_value == target and target not in visited_targets:
             visited_targets.add(target)
             return True
         return False
 
-    if node.left and dfs_with_target(node.left, current_value + node.left.value, target, visited_targets):
+    if node.left and dfs(node.left, current_value + node.left.value, target, visited_targets, p2):
         return True
 
-    if node.right and dfs_with_target(node.right, current_value * node.right.value, target, visited_targets):
+    if node.right and dfs(node.right, current_value * node.right.value, target, visited_targets, p2):
         return True
+    
+    if p2:
+        if node.center and dfs(node.center, int(str(current_value) + str(node.center.value)), target, visited_targets, p2):
+            return True
 
     return False
+
+#Part 1
+start = time.perf_counter()
 
 bridge = {}
 with open(f'Day{day}\\day{day}input.txt', 'r') as file:
@@ -54,7 +58,7 @@ for t_val, c_val in bridge.items():
         current.right = new_node
         current.center = new_node
         current = new_node
-        found = dfs_with_target(root, root.value, int(t_val), visited_targets)
+        found = dfs(root, root.value, int(t_val), visited_targets, False)
         if found:
             p1 += int(t_val)
             sols += 1
@@ -66,34 +70,10 @@ print(f'\t {((end - start) * 10**3):.3f} ms')
 #Part 2
 start = time.perf_counter()
 
-def dfs_with_concat(node, current_value, target, visited_targets):
-    #print(current_value)
-    if current_value > target:
-        return False
-
-    if node is None:
-        return False
-
-    if node.left is None and node.right is None and node.center is None:
-        if current_value == target and target not in visited_targets:
-            visited_targets.add(target)
-            return True
-        return False
-
-    if node.left and dfs_with_concat(node.left, current_value + node.left.value, target, visited_targets):
-        return True
-
-    if node.right and dfs_with_concat(node.right, current_value * node.right.value, target, visited_targets):
-        return True
-    
-    if node.center and dfs_with_concat(node.center, int(str(current_value) + str(node.center.value)), target, visited_targets):
-        return True
-
-    return False
-
 p2 = 0
 sols = 0
 visited_targets = set()
+
 for t_val, c_val in bridge.items():
     root = Node(c_val[0])
     current = root
@@ -105,7 +85,7 @@ for t_val, c_val in bridge.items():
 
         current = new_node
     path = [root.value]
-    found = dfs_with_concat(root, root.value, int(t_val), visited_targets)
+    found = dfs(root, root.value, int(t_val), visited_targets, True)
     if found:
         p2 += int(t_val)
         sols += 1
