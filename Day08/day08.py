@@ -23,8 +23,6 @@ with open(f'Day{day}\\day{day}input.txt', 'r') as file:
     data = [list(line.strip()) for line in file if line.strip()]
     matrix = np.array(data, dtype='U1')
 
-matrixP2 = matrix.copy()
-
 #Fill dictionary with characters:[set of positions]
 antennas = defaultdict(list)
 for (row, col), char in np.ndenumerate(matrix):
