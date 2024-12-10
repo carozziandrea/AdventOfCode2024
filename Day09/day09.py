@@ -26,6 +26,26 @@ def group_contiguous_characters(lst):
         files.append(current_group)
     return files, spaces
 
+def printResult(files, spaces):
+    result = []
+    for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
+        result.extend(sublist1)
+        result.extend(sublist2)
+    for index, value in enumerate(result):
+        print(f'{value}', end="|")
+    print("\n")
+    result = []
+
+def writeResultToFile(files, spaces, filename=f'Day{day}\\day{day}output.txt'):
+    result = []
+    with open(filename, "w") as f:
+        for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
+            result.extend(sublist1)
+            result.extend(sublist2)
+        for index, value in enumerate(result):
+            f.write(f'{value}|')
+        f.write("\n")
+
 #Part 1
 start = time.perf_counter()
 id = 0
@@ -49,7 +69,7 @@ with open(f'Day{day}\\day{day}input.txt', 'r') as file:
             for i in range(int(free_space)):
                 disk.append('.')
                 #print('.', end="")
-    print()
+    #print()
 
 #for index, value in enumerate(disk):
     #print(value, end="")
@@ -91,75 +111,39 @@ files, spaces = group_contiguous_characters(diskP2)
 result = []
 
 #Print
-for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
-    result.extend(sublist1)
-    result.extend(sublist2)
-for index, value in enumerate(result):
-    print(value, end="")
-print("\n")
-result = []
+printResult(files, spaces)
 
 
 
 lenSpaces = [len(space) for space in spaces]
 insertIndex = [0 for space in spaces]
 
-indexfile = len(files)-1
+fi = len(files)-1
 indexspaces = 0
-curFile = files[indexfile]
-curSpace = spaces[indexspaces]
 
 for f in reversed(files):
-    for ix, s in enumerate(spaces):
+    for si, s in enumerate(spaces):
         #IF THERE'S SPACE
-        if s.count('.') >= len(f):
+        if s.count('.') >= len(f) and fi > si:
             #FILL THE VOID
             #FILE GET '.'
             for i in range(len(f)):
-                s[insertIndex[ix]] = f[i]
+                s[insertIndex[si]] = f[i]
                 f[i] = '.'
-                insertIndex[ix] += 1
+                insertIndex[si] += 1
             break
-
-    #PRINT
-"""    for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
+    for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
         result.extend(sublist1)
         result.extend(sublist2)
-    for index, value in enumerate(result):
-        print(value, end="")
-    print("\n")
-    result = []"""
+    files, spaces = group_contiguous_characters(result)
+    insertIndex = [0 for space in spaces]
+    result = []
+    fi -= 1
 
+    
 
-
-
-"""while(indexspaces < len(spaces) and indexfile >= 0):
-    curFile = files[indexfile]
-    curSpace = spaces[indexspaces]
-
-    if len(curFile) <= lenSpaces[indexspaces] and curFile[0] != '.':
-        for i in range(len(curFile)):
-            curSpace[insertIndex[indexspaces]] = curFile[i]
-            files[indexfile][i] = '.'
-            #curSpace[1] -= 1
-            insertIndex[indexspaces] += 1
-            lenSpaces[indexspaces] -= 1
-            if insertIndex[indexspaces] == len(curSpace):
-                indexspaces += 1
-        #files.pop(indexfile)
-        indexfile = len(files)-1
-        for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
-            result.extend(sublist1)
-            result.extend(sublist2)
-        for index, value in enumerate(result):
-            print(value, end="")
-        print("\n")
-        result = []
-    else:
-        indexfile -= 1"""
-
-    #if len(curFile) == lenSpaces[indexspaces]:
-    #    indexfile = len(files)-1
+    #PRINT
+    printResult(files, spaces)
 
 result = []
 part2 = 0
@@ -167,10 +151,13 @@ for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
         result.extend(sublist1)
         result.extend(sublist2)
 for index, value in enumerate(result):
-    print(value, end="")
+    #print(value, end="")
     if value != '.':
         part2 += (index * int(value))
-print()
+#print()
+
+printResult(files, spaces)
+writeResultToFile(files, spaces)
 
 end = time.perf_counter()
 print(f'Part 2: {part2}')
