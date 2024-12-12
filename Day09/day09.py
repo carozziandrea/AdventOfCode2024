@@ -113,7 +113,7 @@ result = []
 #Print
 printResult(files, spaces)
 
-
+print('\n')
 
 lenSpaces = [len(space) for space in spaces]
 insertIndex = [0 for space in spaces]
@@ -122,6 +122,9 @@ fi = len(files)-1
 indexspaces = 0
 
 for f in reversed(files):
+    print(f"Checking {f[0]}")
+    if f[0] == 16:
+        pass
     for si, s in enumerate(spaces):
         #IF THERE'S SPACE
         if s.count('.') >= len(f) and fi > si:
@@ -135,8 +138,8 @@ for f in reversed(files):
     for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
         result.extend(sublist1)
         result.extend(sublist2)
-    files, spaces = group_contiguous_characters(result)
-    insertIndex = [0 for space in spaces]
+    #files, spaces = group_contiguous_characters(result)
+    #insertIndex = [0 for _ in spaces]
     result = []
     fi -= 1
 
@@ -151,9 +154,10 @@ for sublist1, sublist2 in zip_longest(files, spaces, fillvalue=[]):
         result.extend(sublist1)
         result.extend(sublist2)
 for index, value in enumerate(result):
-    #print(value, end="")
     if value != '.':
+        mul = index * int(value)
         part2 += (index * int(value))
+        #print(f'{index} * {value} = {mul} - Part 2 sum: {part2}')
 #print()
 
 printResult(files, spaces)
